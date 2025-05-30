@@ -1,6 +1,6 @@
 import { watch, type Ref } from 'vue'
 import * as THREE from 'three'
-import type { Location } from '@/types'
+import type { Location } from '@/types/index'
 
 export function useLocationManager(
     scene: THREE.Scene,
@@ -102,8 +102,6 @@ export function useLocationManager(
                 const geometry = new THREE.TubeGeometry(curve, 20, 0.05, 8, false)
                 const material = new THREE.MeshBasicMaterial({
                     color: 0xffd700,
-                    emissive: 0xffd700,
-                    emissiveIntensity: 0.3
                 })
 
                 const pathMesh = new THREE.Mesh(geometry, material)
@@ -167,9 +165,7 @@ export function useLocationManager(
         }
     }
 
-    // Watch profundo para detectar cambios en el estado del juego
-    watch(locations, (newLocations, oldLocations) => {
-        console.log('Locations changed, updating visuals...')
+    watch(locations, () => {
         updateLocations()
     }, { deep: true })
 

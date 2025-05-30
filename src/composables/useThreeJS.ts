@@ -92,7 +92,7 @@ export function useThreeJS(container: Ref<HTMLElement | null>) {
         if (!renderer) return
 
         let isDragging = false
-        let previousMousePosition = { x: 0, y: 0 }
+        let previousPosition = { x: 0, y: 0 }
         let cameraMoveTimeout: number | null = null
 
         const resetCameraMoveTimeout = () => {
@@ -102,38 +102,55 @@ export function useThreeJS(container: Ref<HTMLElement | null>) {
             }, 500)
         }
 
+        // Mouse events
         const onMouseDown = (event: MouseEvent) => {
             isDragging = true
-            //isRotating.value = false
-            previousMousePosition = { x: event.clientX, y: event.clientY }
+            previousPosition = { x: event.clientX, y: event.clientY }
+            resetCameraMoveTimeout()
+        }
+        const onMouseUp = () => { isDragging = false }
+        const onMouseMove = (event: MouseEvent) => {
+            if (!isDragging || !camera) return
+            const deltaMove = {
+                x: event.clientX - previousPosition.x,
+                y: event.clientY - previousPosition.y
+            }
+            updateCamera(deltaMove)
+            previousPosition = { x: event.clientX, y: event.clientY }
+            isRotating.value = false
             resetCameraMoveTimeout()
         }
 
-        const onMouseUp = () => {
-            isDragging = false
+        // Touch events
+        const onTouchStart = (event: TouchEvent) => {
+            if (event.touches.length !== 1) return
+            isDragging = true
+            previousPosition = { x: event.touches[0].clientX, y: event.touches[0].clientY }
+            resetCameraMoveTimeout()
+        }
+        const onTouchEnd = () => { isDragging = false }
+        const onTouchMove = (event: TouchEvent) => {
+            if (!isDragging || !camera || event.touches.length !== 1) return
+            const touch = event.touches[0]
+            const deltaMove = {
+                x: touch.clientX - previousPosition.x,
+                y: touch.clientY - previousPosition.y
+            }
+            updateCamera(deltaMove)
+            previousPosition = { x: touch.clientX, y: touch.clientY }
+            isRotating.value = false
+            resetCameraMoveTimeout()
         }
 
-        const onMouseMove = (event: MouseEvent) => {
-            if (!isDragging || !camera) return
-
-            const deltaMove = {
-                x: event.clientX - previousMousePosition.x,
-                y: event.clientY - previousMousePosition.y
-            }
-
+        // Camera update logic
+        const updateCamera = (deltaMove: { x: number, y: number }) => {
             const spherical = new THREE.Spherical()
             spherical.setFromVector3(camera.position)
-
             spherical.theta -= deltaMove.x * 0.01
             spherical.phi += deltaMove.y * 0.01
             spherical.phi = Math.max(0.1, Math.min(Math.PI - 0.1, spherical.phi))
-
             camera.position.setFromSpherical(spherical)
             camera.lookAt(0, 0, 0)
-
-            previousMousePosition = { x: event.clientX, y: event.clientY }
-            isRotating.value = false
-            resetCameraMoveTimeout()
         }
 
         renderer.domElement.addEventListener('mousedown', onMouseDown)
@@ -141,12 +158,19 @@ export function useThreeJS(container: Ref<HTMLElement | null>) {
         renderer.domElement.addEventListener('mousemove', onMouseMove)
         renderer.domElement.addEventListener('mouseleave', onMouseUp)
 
+        renderer.domElement.addEventListener('touchstart', onTouchStart)
+        renderer.domElement.addEventListener('touchend', onTouchEnd)
+        renderer.domElement.addEventListener('touchmove', onTouchMove)
+
         controls = {
             dispose: () => {
                 renderer?.domElement.removeEventListener('mousedown', onMouseDown)
                 renderer?.domElement.removeEventListener('mouseup', onMouseUp)
                 renderer?.domElement.removeEventListener('mousemove', onMouseMove)
                 renderer?.domElement.removeEventListener('mouseleave', onMouseUp)
+                renderer?.domElement.removeEventListener('touchstart', onTouchStart)
+                renderer?.domElement.removeEventListener('touchend', onTouchEnd)
+                renderer?.domElement.removeEventListener('touchmove', onTouchMove)
             }
         }
     }

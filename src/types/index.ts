@@ -1,3 +1,5 @@
+import * as THREE from 'three'
+
 export interface Location {
     id: number
     name: string
