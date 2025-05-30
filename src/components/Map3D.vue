@@ -47,7 +47,7 @@ import LocationModal from './LocationModal.vue'
 const container = ref<HTMLElement | null>(null)
 
 const { gameState, selectedLocation, completeLocation, resetGame, selectLocation } = useGameState()
-const { refs, isRotating, toggleRotation, scene, camera, renderer, locationMeshes } = useThreeJS(container)
+const { isRotating, toggleRotation, scene, camera, renderer, locationMeshes } = useThreeJS(container)
 const { createLocations, handleClick } = useLocationManager(
     scene,
     camera,

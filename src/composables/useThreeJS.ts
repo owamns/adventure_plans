@@ -27,12 +27,17 @@ export function useThreeJS(container: Ref<HTMLElement | null>) {
         if (!container.value) return
 
         // Configurar escena
-        scene.background = new THREE.Color(0x1a1a2e)
+        const skyboxLoader = new THREE.CubeTextureLoader()
+        scene.background = skyboxLoader.load([
+            'src/assets/texturas/sky.png', 'src/assets/texturas/sky.png',
+            'src/assets/texturas/sky.png', 'src/assets/texturas/sky.png',
+            'src/assets/texturas/sky.png', 'src/assets/texturas/sky.png'
+        ])
 
         // Configurar cámara
         camera.aspect = container.value.clientWidth / container.value.clientHeight
         camera.position.set(8, 6, 8)
-        camera.lookAt(0, 0, 0)
+        camera.lookAt(0, 2, 0)
         camera.updateProjectionMatrix()
 
         // Configurar renderer
@@ -48,7 +53,7 @@ export function useThreeJS(container: Ref<HTMLElement | null>) {
         const ambientLight = new THREE.AmbientLight(0x404040, 0.6)
         scene.add(ambientLight)
 
-        const directionalLight = new THREE.DirectionalLight(0xffffff, 1)
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 4)
         directionalLight.position.set(5, 10, 5)
         directionalLight.castShadow = true
         directionalLight.shadow.mapSize.width = 2048
@@ -66,11 +71,10 @@ export function useThreeJS(container: Ref<HTMLElement | null>) {
     }
 
     const createTerrain = () => {
-        const geometry = new THREE.PlaneGeometry(20, 20, 32, 32)
-        const material = new THREE.MeshLambertMaterial({
-            color: 0x2d5a27,
-            wireframe: false
-        })
+        const loader = new THREE.TextureLoader()
+        const texture = loader.load('src/assets/texturas/mapa.png')
+        const geometry = new THREE.PlaneGeometry(80, 80, 64, 64)
+        const material = new THREE.MeshLambertMaterial({ map: texture })
 
         const terrain = new THREE.Mesh(geometry, material)
         terrain.rotation.x = -Math.PI / 2
