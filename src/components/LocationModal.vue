@@ -11,6 +11,21 @@
       </div>
     </div>
 
+    <!-- Mensaje Final Especial (solo para nivel final) -->
+    <div v-else-if="showCompletionMessage" class="bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-bold p-8 rounded-xl text-center shadow-2xl border-4 border-yellow-300 max-w-md">
+      <div class="text-6xl animate-bounce mb-4">🎊</div>
+      <div class="text-2xl mb-2">¡MISIÓN CUMPLIDA!</div>
+      <div class="text-xl mb-2">¡Has completado TODOS los desafíos de Lima!</div>
+      <div class="text-lg mb-4">Eres un verdadero explorador de la ciudad ⭐</div>
+      <div class="text-sm mb-4">¡Felicitaciones por tu increíble aventura! 🌟</div>
+      <button
+          @click="closeCompletionMessage"
+          class="w-full bg-green-600 hover:bg-green-700 text-white py-3 px-6 rounded-lg transition-colors font-bold"
+      >
+        ✨ ¡Continuar Aventura!
+      </button>
+    </div>
+
     <!-- Modal de información de la ubicación -->
     <div v-else class="bg-white rounded-lg p-6 max-w-md relative">
       <h3 class="text-2xl font-bold mb-4" :style="{ color: location.color }">
@@ -66,6 +81,7 @@ const emit = defineEmits<{
 }>()
 
 const playingGame = ref(false)
+const showCompletionMessage = ref(false)
 
 const gameComponents = {
   CineGame,
@@ -80,17 +96,51 @@ const gameComponent = computed(() => {
 
 const startGame = () => {
   playingGame.value = true
+  showCompletionMessage.value = false
 }
 
 const handleGameComplete = () => {
   playingGame.value = false
+
   // Solo completar si no estaba completado antes
   if (!props.location.completed) {
     emit('complete', props.location.id)
+  }
+
+  // Solo mostrar mensaje especial para el nivel final (CineGame)
+  if (props.location.gameComponent === 'CineGame') {
+    setTimeout(() => {
+      showCompletionMessage.value = true
+    }, 2000)
+  } else {
+    emit('close')
   }
 }
 
 const handleGameClose = () => {
   playingGame.value = false
 }
+
+const closeCompletionMessage = () => {
+  showCompletionMessage.value = false
+  // Opcionalmente cerrar todo el modal
+  emit('close')
+}
 </script>
+
+<style scoped>
+.animate-bounce {
+  animation: bounce 1s infinite;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(-25%);
+    animation-timing-function: cubic-bezier(0.8,0,1,1);
+  }
+  50% {
+    transform: none;
+    animation-timing-function: cubic-bezier(0,0,0.2,1);
+  }
+}
+</style>

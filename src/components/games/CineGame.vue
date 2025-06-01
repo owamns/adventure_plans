@@ -10,11 +10,11 @@
           ✕ Cerrar
         </button>
       </div>
+
       <!-- Header -->
       <div class="text-center" style="margin-bottom: 2rem;">
         <h2 class="text-4xl font-bold text-white" style="margin-bottom: 0.5rem;">🎬 Cine Stitch</h2>
         <p class="text-pink-200">¡Último desafío! Encuentra las parejas de Stitch</p>
-
         <div class="flex justify-center gap-4" style="margin-top: 1rem;">
           <div class="bg-gradient-to-r from-purple-600 to-pink-600 bg-opacity-90 px-4 py-2 rounded-lg border border-pink-300">
             <span class="text-pink-100">Movimientos:</span>
@@ -80,7 +80,6 @@
       <div v-if="gameCompleted" class="bg-gradient-to-r from-green-500 to-emerald-600 bg-opacity-20 border-2 border-green-400 rounded-xl p-6 text-center shadow-2xl">
         <div class="text-8xl animate-bounce" style="margin-bottom: 1rem;">🏆</div>
         <h3 class="text-3xl font-bold text-white" style="margin-bottom: 1rem;">¡FELICITACIONES!</h3>
-
         <p class="text-green-200" style="margin-bottom: 1rem;">
           Completaste el último nivel en {{ moves }} movimientos
         </p>
@@ -100,15 +99,6 @@
         >
           🔄 Jugar de Nuevo
         </button>
-      </div>
-
-      <!-- Mensaje Final Especial (separado) -->
-      <div v-if="showFinalMessage" class="bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-bold p-6 rounded-xl text-center shadow-2xl border-4 border-yellow-300" style="margin-top: 2rem;">
-        <div class="text-6xl animate-bounce" style="margin-bottom: 1rem;">🎊</div>
-        <div class="text-2xl" style="margin-bottom: 0.5rem;">¡MISIÓN CUMPLIDA!</div>
-        <div class="text-xl" style="margin-bottom: 0.5rem;">¡Has completado TODOS los desafíos de Lima!</div>
-        <div class="text-lg">Eres un verdadero explorador de la ciudad ⭐</div>
-        <div class="text-sm" style="margin-top: 1rem;">¡Felicitaciones por tu increíble aventura! 🌟</div>
       </div>
 
       <!-- Instrucciones -->
@@ -150,7 +140,6 @@ const moves = ref(0)
 const gameStarted = ref(false)
 const gameCompleted = ref(false)
 const showingAll = ref(false)
-const showFinalMessage = ref(false)
 
 // Imágenes de Stitch usando emojis más variados para el nivel final
 const stitchImages = ['💙', '👽', '🌺', '🏝️', '🎬', '🍿', '🎭', '🎪']
@@ -243,9 +232,9 @@ watch(flippedCards, (newFlippedCards) => {
 watch(matchedPairs, (newMatchedPairs) => {
   if (gameStarted.value && newMatchedPairs.length === 6) {
     gameCompleted.value = true
+    // Emitir evento de completado después de 2 segundos para mostrar la celebración
     setTimeout(() => {
       emit('complete')
-      showFinalMessage.value = true
     }, 2000)
   }
 }, { deep: true })
