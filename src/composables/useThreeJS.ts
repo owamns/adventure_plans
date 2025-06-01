@@ -1,6 +1,8 @@
 import { ref, onMounted, onUnmounted, nextTick, type Ref } from 'vue'
 import * as THREE from 'three'
 import type { ThreeJSRefs } from '@/types'
+import mapaTextura from '@/assets/texturas/mapa.png'
+import sky from '@/assets/texturas/sky.png'
 
 export function useThreeJS(container: Ref<HTMLElement | null>) {
     // Usar objetos normales en lugar de reactive para Three.js
@@ -29,9 +31,9 @@ export function useThreeJS(container: Ref<HTMLElement | null>) {
         // Configurar escena
         const skyboxLoader = new THREE.CubeTextureLoader()
         scene.background = skyboxLoader.load([
-            'src/assets/texturas/sky.png', 'src/assets/texturas/sky.png',
-            'src/assets/texturas/sky.png', 'src/assets/texturas/sky.png',
-            'src/assets/texturas/sky.png', 'src/assets/texturas/sky.png'
+            sky, sky,
+            sky, sky,
+            sky, sky
         ])
 
         // Configurar cámara
@@ -71,8 +73,9 @@ export function useThreeJS(container: Ref<HTMLElement | null>) {
     }
 
     const createTerrain = () => {
+
         const loader = new THREE.TextureLoader()
-        const texture = loader.load('src/assets/texturas/mapa.png')
+        const texture = loader.load(mapaTextura)
         const geometry = new THREE.PlaneGeometry(80, 80, 64, 64)
         const material = new THREE.MeshLambertMaterial({ map: texture })
 
