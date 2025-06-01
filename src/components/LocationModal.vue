@@ -11,18 +11,19 @@
       </div>
     </div>
 
-    <!-- Mensaje Final Especial (solo para nivel final) -->
-    <div v-else-if="showCompletionMessage" class="bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-bold p-8 rounded-xl text-center shadow-2xl border-4 border-yellow-300 max-w-md">
-      <div class="text-6xl animate-bounce mb-4">🎊</div>
-      <div class="text-2xl mb-2">¡MISIÓN CUMPLIDA!</div>
-      <div class="text-xl mb-2">¡Has completado TODOS los desafíos de Lima!</div>
-      <div class="text-lg mb-4">Eres un verdadero explorador de la ciudad ⭐</div>
-      <div class="text-sm mb-4">¡Felicitaciones por tu increíble aventura! 🌟</div>
+    <!-- Mensaje Final Especial Romántico (nivel final) -->
+    <div v-else-if="showCompletionMessage" class="bg-gradient-to-r from-pink-300 via-pink-400 to-red-400 text-white font-bold p-8 rounded-3xl text-center shadow-2xl border-4 border-pink-200 max-w-md">
+      <div class="text-6xl animate-pulse mb-4">💖</div>
+      <div class="text-3xl mb-2">¡MISIÓN COMPLETADA!</div>
+      <div class="text-xl mb-2">Has conquistado cada desafio...</div>
+      <div class="text-lg mb-2">Y también... 💘</div>
+      <div class="text-xl mb-4 font-semibold">¡Mi corazón es tu recompensa! ❤️</div>
+      <div class="text-sm italic mb-4">Gracias por acompañarme en esta aventura mágica.</div>
       <button
           @click="closeCompletionMessage"
-          class="w-full bg-green-600 hover:bg-green-700 text-white py-3 px-6 rounded-lg transition-colors font-bold"
+          class="w-full bg-rose-600 hover:bg-rose-700 text-white py-3 px-6 rounded-xl transition-colors font-bold"
       >
-        ✨ ¡Continuar Aventura!
+        💌 Seguir Juntos en Esta Aventura
       </button>
     </div>
 
