@@ -8,6 +8,7 @@ export interface Location {
     completed: boolean
     color: string
     description: string
+    gameComponent: string
 }
 
 export interface GameState {

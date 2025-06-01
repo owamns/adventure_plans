@@ -6,7 +6,7 @@ export const initialLocations: Location[] = [
         name: 'Makis',
         position: [0, 0, 0],
         unlocked: true,
-        completed: false,
+        completed: true,
         color: '#4ade80',
         description: 'Arma el sushi correctamente',
         gameComponent: 'MakisGame'
@@ -15,8 +15,8 @@ export const initialLocations: Location[] = [
         id: 2,
         name: 'Hipódromo',
         position: [4, 1, -2],
-        unlocked: false,
-        completed: false,
+        unlocked: true,
+        completed: true,
         color: '#22c55e',
         description: 'Apuesta y mira correr a los caballos',
         gameComponent: 'HipodromoGame'
@@ -25,8 +25,8 @@ export const initialLocations: Location[] = [
         id: 3,
         name: 'Patinaje',
         position: [-3, 3, 1],
-        unlocked: false,
-        completed: false,
+        unlocked: true,
+        completed: true,
         color: '#3b82f6',
         description: 'Esquiva obstáculos mientras patinas',
         gameComponent: 'PatinajeGame'
@@ -35,8 +35,8 @@ export const initialLocations: Location[] = [
         id: 4,
         name: 'Cine',
         position: [1, 2, 4],
-        unlocked: false,
-        completed: false,
+        unlocked: true,
+        completed: true,
         color: '#8b5cf6',
         description: 'Encuentra las parejas de Stitch',
         gameComponent: 'CineGame'
